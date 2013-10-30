@@ -11,9 +11,9 @@ class Server
   end
 
   def listen
-    socket = TCPServer.open(port)
+    server = TCPServer.open(port)
     loop do
-      client = socket.accept
+      client = server.accept
       plain_request, line = '', ''
       while (line != "\x00\n")
         line = client.gets
