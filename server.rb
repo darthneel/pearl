@@ -14,9 +14,10 @@ class Server
     socket = TCPServer.open(port)
     loop do
       client = socket.accept
-      plain_request = []
-      while (line = client.readline)
-        plain_request << line
+      plain_request, line = '', ''
+      while (line != "\x00\n")
+        line = client.gets
+        plain_request += line
       end
       request = Request.parse(plain_request)
       response = route request
@@ -39,7 +40,7 @@ class Server
   def list_messages
     Request.new.tap do |request|
       request.headers = {'Status' => 200}
-      request.body = messages.join("\n")
+      request.body = messages.join
     end
   end
 

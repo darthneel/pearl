@@ -57,7 +57,7 @@ describe Request do
             'HEADER-3 VALUE-3'
           ].join("\n"),
           'This is the body of the request'
-        ].join("\n\n")
+        ].join("\n\n") + "\x00"
       end
 
       let(:request) do
@@ -108,7 +108,7 @@ describe Request do
     end
 
     it 'encodes the request as a string' do
-      expect(request.to_s).to eq "HEADER-1 VALUE-1\nHEADER-2 VALUE-2\n\nThe body"
+      expect(request.to_s).to eq "HEADER-1 VALUE-1\nHEADER-2 VALUE-2\n\nThe body\x00"
     end
   end
 end

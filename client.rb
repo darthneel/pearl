@@ -12,7 +12,10 @@ class Client
   end
 
   def prompt
-    loop { parse gets }
+    loop do
+      print '>> '
+      parse gets
+    end
   end
 
   def list_messages_request
@@ -28,11 +31,11 @@ class Client
   def send_request(request)
     server = TCPSocket.open(hostname, port)
     server.puts request.to_s
-    response = []
+    response = ''
     while (line = server.gets)
-      response << line
+      response += line
     end
-    response = Request.parse(response.join "\n")
+    response = Request.parse(response)
     puts response.body
     server.close
   end

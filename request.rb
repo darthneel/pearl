@@ -1,12 +1,13 @@
 class Request
   REQUEST_SEPARATOR = "\n\n"
-  HEADER_SEPARATOR = "\n"
+  HEADER_SEPARATOR  = "\n"
+  EOF               = "\x00"
 
   def self.parse(request)
     headers, body = request.split(REQUEST_SEPARATOR, 2)
     instance = new
     instance.headers = Request.parse_headers headers
-    instance.body = body
+    instance.body = body.chop
     instance
   end
 
@@ -24,6 +25,6 @@ class Request
   end
 
   def to_s
-    "#{encoded_headers}#{REQUEST_SEPARATOR}#{body}"
+    "#{encoded_headers}#{REQUEST_SEPARATOR}#{body}#{EOF}"
   end
 end
